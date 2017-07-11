@@ -48,8 +48,8 @@ class AcipenserMiddleware(MiddlewareMixin):
             fake_request.user = AnonymousUser()
 
 
-        fake_request_obj = pickle.dumps(fake_request)
-        fake_respones_obj = pickle.dumps(fake_request)
+        fake_request_obj = pickle.dumps(fake_request, protocol=2)
+        fake_respones_obj = pickle.dumps(fake_request, protocol=2)
         RequestCache.objects.create(path=request.path, method=request.method, request=fake_request_obj, response=pickle.dumps(
-            response), db_updated=db_updated, request_md5=self.count_request_md5(request, response))
+            response, protocol=2), db_updated=db_updated, request_md5=self.count_request_md5(request, response))
         return response
